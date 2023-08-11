@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dabloon Idle</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div id="gameContainer">
+
+    <!-- Sidebar Navigation -->
+    <nav id="sidebar">
+        <button data-section="dashboard">Dashboard</button>
+        <button data-section="upgrades">Upgrades</button>
+        <button data-section="generators">Generators</button>
+        <button data-section="prestigeSection" id="prestigeNavButton">Prestige</button>
+    </nav>
+
+    <!-- Main Content -->
+    <div id="mainContent">
+        <!-- Dashboard Section -->
+        <div id="dashboard">
+            <h1>Dabloons Generator</h1>
+            <button id="dabloonButton">Collect Dabloons</button>
+            <p>You have: <span id="dabloonCount">0</span> Dabloons</p>
+            <p id="dabloonPerClick">Dabloons/click: 1</p>
+            <p>Dabloons/sec: <span id="dabloonPerSecond">0</span></p>
+        </div>
+        
+        <!-- Upgrades Section -->
+        <div id="upgrades" class="hidden">
+            <h2>Upgrades</h2>
+            <div class="upgrade" id="dabloonBonusUpgrade">
+                <p id="dabloonBonusUpgradeInfo">Dabloon Bonus Info will be here</p>
+                <button id="buyDabloonBonusUpgrade">Buy Upgrade</button>
+            </div>
+            <div class="upgrade" id="dabloonBonus5Upgrade">
+                <p>Dabloon Bonus 5x: Get +5 Dabloons per click! Cost: 250 Dabloons</p>
+                <button id="buyDabloonBonus5Upgrade">Buy Upgrade</button>
+            </div>
+            <div class="upgrade" id="dabloonBonus10Upgrade">
+                <p>Dabloon Bonus 10x: Get +10 Dabloons per click! Cost: 1000 Dabloons</p>
+                <button id="buyDabloonBonus10Upgrade">Buy Upgrade</button>
+            </div>
+        </div>
+        
+        <!-- Generators Section -->
+        <div id="generators" class="hidden">
+            <h2>Generators</h2>
+            <div class="generator" id="genPointOne">
+                <p>Small Chest: Generates 0.1 Dabloons per second. Cost: <span id="genPointOneCost">1000</span> Dabloons</p>
+                <button id="buyGenPointOne">Buy Generator</button>
+            </div>
+            <div class="generator" id="genOne">
+                <p>Medium Chest: Generates 1 Dabloon per second. Cost: <span id="genOneCost">2500</span> Dabloons</p>
+                <button id="buyGenOne">Buy Generator</button>
+            </div>
+            <div class="generator" id="genFive">
+                <p>Large Chest: Generates 5 Dabloons per second. Cost: <span id="genFiveCost">10000</span> Dabloons</p>
+                <button id="buyGenFive">Buy Generator</button>
+            </div>
+        </div>
+        
+        <!-- Prestige Section (Hidden by default) -->
+        <div class="content-section hidden" id="prestigeSection">
+            <h2>Prestige</h2>
+            <button id="prestigeButton">Prestige Now</button>
+            <p>You will earn: <span id="ancientCoinsEarned">0</span> Ancient Coins</p>
+            <p>Total Ancient Coins: <span id="totalAncientCoins">0</span></p>
+        </div>
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
