@@ -18,6 +18,7 @@
         <button data-section="upgrades">Upgrades</button>
         <button data-section="generators">Generators</button>
         <button data-section="prestigeSection" id="prestigeNavButton">Prestige</button>
+        <button data-section="statisticsSection">Statistics</button>
     </nav>
 
     <!-- Main Content -->
@@ -72,8 +73,16 @@
             <p>You will earn: <span id="ancientCoinsEarned">0</span> Ancient Coins</p>
             <p>Total Ancient Coins: <span id="totalAncientCoins">0</span></p>
         </div>
-    </div>
 
+        <!-- Statistics Section (Hidden by default) -->
+        <div class="content-section hidden" id="statisticsSection">
+            <h2>Statistics</h2>
+            <p>Total Dabloons Earned: <span id="totalDabloonsEarned">0</span></p>
+            <p>Total Clicks: <span id="totalClicks">0</span></p>
+            <p>Time Played: <span id="timePlayed">0h 0m 0s</span></p>
+            <!-- Add other stats elements as needed -->
+        </div>
+    </div>
 </div>
 
 <script src="script.js"></script>

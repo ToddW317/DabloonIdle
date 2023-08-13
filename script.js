@@ -7,6 +7,8 @@ let boughtGenerators = []; // To track purchased generators
 let dabloonBonusUpgradeCost = 50; // Initial cost for the first upgrade
 const rateOfGrowth = 1.1; // Rate at which upgrade costs increase
 let dabloonBonusUpgradeLevel = 0; // Number of times the upgrade has been purchased
+let dps = 0; // Dabloons earned every second.
+
 
 let dabloonBonus5 = 0; // Amount of extra Dabloons from +5 upgrade
 let dabloonBonus5UpgradeCost = 250; // Initial cost for the first +5 upgrade
@@ -14,6 +16,26 @@ let dabloonBonus5UpgradeLevel = 0; // Number of times the +5 upgrade has been pu
 let genPointOneCount = 0;
 let genOneCount = 0;
 let genFiveCount = 0;
+
+// stats tracking
+let dabloonsEarned = 0;
+let totalDabloonsEarned = 0;
+let totalClicks = 0;
+let startTime = Date.now();
+let timePlayed = 0; // in milliseconds
+let totalDabloons = 0;
+
+const stats = {
+    totalDabloonsEarned: 0,
+    totalClicks: 0,
+    timePlayed: 0
+    // ... any other stats you want to track
+};
+
+stats.totalDabloonsEarned += dabloonsEarned; // increment by whatever amount of Dabloons are earned
+stats.totalClicks++;
+
+
 
 let dabloonBonus10 = 0; // Amount of extra Dabloons from +10 upgrade
 let dabloonBonus10UpgradeCost = 1000; // Initial cost for the first +10 upgrade
@@ -51,6 +73,14 @@ const genOneButton = genOne.querySelector("button");
 const genFiveButton = genFive.querySelector("button");
 
 // Functions
+
+function updateStatsDisplay() {
+    document.getElementById("totalDabloonsEarned").innerText = stats.totalDabloonsEarned;
+    document.getElementById("totalClicks").innerText = stats.totalClicks;
+    document.getElementById("timePlayed").innerText = stats.timePlayed;
+    // ... any other stats you want to display
+}
+
 function updateDabloonDisplay() {
     dabloonDisplay.textContent = Math.ceil(dabloonCount);
     checkButtonAvailability();
@@ -89,7 +119,6 @@ function updateGeneratorDisplay() {
     genFive.querySelector("p").textContent = `Large Chest: Generates 5 Dabloons/sec. Cost: ${calculateGeneratorCost(baseGenFiveCost, genFiveCount)} Dabloons`;
 }
 
-
 function updatePotentialAncientCoins() {
     let potentialCoins = Math.floor(dabloonCount / 10000);
     document.getElementById('ancientCoinsEarned').textContent = potentialCoins;
@@ -106,9 +135,18 @@ function generateDabloonsOverTime() {
     updatePotentialAncientCoins();
 }
 
-function updateDabloonPerSecondDisplay() {
-    dabloonPerSecondDisplay.textContent = getDabloonsPerSecond().toFixed(2);  // Displaying up to two decimal places
+// Stat Tracking
+// When a player earns dabloons:
+function earnDabloons(amount) {
+    totalDabloonsEarned += amount;
 }
+
+// When a player clicks:
+function playerClick() {
+    totalClicks++;
+}
+
+// Button Availability Checks
 
 function checkButtonAvailability() {
     if (dabloonCount < dabloonBonusUpgradeCost) {
@@ -157,6 +195,16 @@ document.addEventListener("DOMContentLoaded", function () {
             showSection(targetSectionId);
         });
     });
+
+    function displayStats() {
+        document.getElementById("totalDabloons").innerText = "Total Dabloons Earned: " + totalDabloonsEarned;
+        document.getElementById("totalClicks").innerText = "Total Clicks: " + totalClicks;
+    
+        let hours = Math.floor(timePlayed / 3600000);
+        let minutes = Math.floor((timePlayed % 3600000) / 60000);
+        let seconds = Math.floor((timePlayed % 60000) / 1000);
+        document.getElementById("timePlayed").innerText = `Time Played: ${hours}h ${minutes}m ${seconds}s`;
+    }
 
     // Event listeners for buying upgrades and generators
     document.getElementById("buyDabloonBonusUpgrade").addEventListener("click", function() {
@@ -210,6 +258,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (dabloonCount >= cost) {
             dabloonCount -= cost;
             genPointOneCount++;
+            dps += 0.1;
             updateDabloonDisplay();
             updateGeneratorDisplay();
             checkButtonAvailability();
@@ -222,6 +271,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (dabloonCount >= cost) {
             dabloonCount -= cost;
             genOneCount++;
+            dps += 1;
             updateDabloonDisplay();
             updateGeneratorDisplay();
             checkButtonAvailability();
@@ -234,6 +284,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (dabloonCount >= cost) {
             dabloonCount -= cost;
             genFiveCount++;
+            dps += 5;
             updateDabloonDisplay();
             updateGeneratorDisplay();
             checkButtonAvailability();
@@ -250,9 +301,16 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     
     setInterval(function() {
-        let totalGeneration = ((genPointOneCount * 0.1) + (genOneCount * 1) + (genFiveCount * 5)) + (ancientCoins * 10);
+        let totalGeneration = getDabloonsPerSecond();
         dabloonCount += totalGeneration;
+        stats.totalDabloonsEarned += totalGeneration;
+        timePlayed = Date.now() - startTime;
+        stats.timePlayed += 1000;
+        dabloonCount += dps; // Increment current balance by dps
+        totalDabloonsEarned += dps; // Increment lifetime earnings by dps
         updateDabloonDisplay();
+        displayStats();
+        updateStatsDisplay();
     }, 1000);  // This function runs every second
     
     // Function to display a specific game section and hide others
